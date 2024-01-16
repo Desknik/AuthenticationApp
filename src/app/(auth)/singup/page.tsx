@@ -47,7 +47,7 @@ export default function Page() {
 
         return (emailValue === "" || emailIsInvalid || passwordValue === "" || passwordIsInvalid) ? true : false;
         
-    }, [emailValue, passwordValue, confirmPasswordValue]);
+    }, [emailValue, emailIsInvalid, passwordValue, passwordIsInvalid]);
 
 
     /* Sign up */

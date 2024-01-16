@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from 'react'
-import {Card, CardHeader, CardBody, CardFooter, button} from "@nextui-org/react";
+import {Card, CardHeader, CardBody} from "@nextui-org/react";
 import {Input} from "@nextui-org/react";
 import {Button} from "@nextui-org/react";
 
@@ -84,8 +84,8 @@ export default function Page() {
                     >Login</Button>
 
                     <div className="mt-6 mb-1">
-                        <span className='block text-center text-gray-400'>Don't have an account?</span>           
-                        <Link className='block text-center text-sm text-primary' href={"/singup"}>
+                        <span className='block text-center text-gray-400'>Don&apos;t have an account?</span>           
+                        <Link href={'/singup'} className='block text-center text-sm text-primary'>
                             Create now for free!
                         </Link>
                     </div>
