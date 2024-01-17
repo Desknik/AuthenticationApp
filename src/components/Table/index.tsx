@@ -20,7 +20,7 @@ import {
   ChipProps,
   SortDescriptor
 } from "@nextui-org/react";
-import {columns, users} from "./data";
+import { columns, users } from "./data";
 import { FaChevronDown, FaPlus, FaSearch } from "react-icons/fa";
 import { FaEllipsisVertical } from "react-icons/fa6";
 import { Link } from "@nextui-org/react";
@@ -131,7 +131,7 @@ export default function App() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onClick={() =>{console.log(user)}}>View</DropdownItem>
+                <DropdownItem>View</DropdownItem>
                 <DropdownItem>Edit</DropdownItem>
                 <DropdownItem>Delete</DropdownItem>
               </DropdownMenu>

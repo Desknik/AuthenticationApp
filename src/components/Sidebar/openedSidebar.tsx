@@ -1,77 +1,52 @@
 import React from 'react'
-
-import {Avatar, Button, Divider} from "@nextui-org/react";
-
-import Link from 'next/link';
 import Image from 'next/image'
-import { usePathname } from 'next/navigation';
 
-import { IoExitOutline} from "react-icons/io5";
+import SignOutButton from './SignOutButton';
+import SidebarLinkButtons from './SidebarLinkButtons';
+
+import { Avatar, Divider } from "@nextui-org/react";
 import { GoHome, GoTools } from 'react-icons/go';
-
-
+import { useSession } from 'next-auth/react';
 
 export default function OpenedSidebar() {
 
-    interface SidebarPaginationProps{
-        name: string,
-        path: string,
-        icon: React.ReactNode
-    }
+  const {data: session, status } = useSession()
 
-    function SidebarPagination({ name, path, icon }: SidebarPaginationProps){
-        const pathname = usePathname()
-        
-        return(
-            <Link href={path}>
-                <Button variant='light' className={`w-full font-medium text-gray-700 text-lg rounded-md ${pathname === path && 'bg-gradient-to-r from-violet-400 to-sky-300  !text-white'}`}>
-                    {icon}
-                    <span>{name}</span>
-                </Button>
-            </Link>
-        )
-    }
-
+  const user = {
+    image: session?.user?.image || "",
+    name: session?.user?.name || "",
+    email: session?.user?.email,
+  }
     return (
     <>
-        <div className="">
+        <div>
           <div className="flex gap-2 items-end">
-            <Image
-              src='/assets/logo_2.png'
-              alt='Logo'
-              width={50}
-              height={50}
-            ></Image>
-
+            <Image src='/assets/logo_2.png' alt='Logo' width={50} height={50}/>
             <h2 className='text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-violet-400 to-sky-300 text-xl font-bold'>Ponnye</h2>
-
           </div>
 
           <Divider className='my-5'></Divider>
 
           <div className="flex flex-col gap-3">
-            <SidebarPagination name='Dashboard' path='/' icon={<GoHome/>}/>
-            <SidebarPagination name='Settings' path='/config' icon={<GoTools/>}/>
+            <SidebarLinkButtons name='Dashboard' path='/' icon={<GoHome/>}/>
+            <SidebarLinkButtons name='Settings' path='/config' icon={<GoTools/>}/>
 
           </div>
-
         </div>
 
         <div className="flex items-center gap-3 mb-2">
-          <Avatar color='primary' name='Junior'
+          <Avatar color='primary' name={user.name} src={user.image}
             classNames={{
               base: "bg-gradient-to-br from-pink-400 to-violet-400",
-              icon: "text-white",
-            }}/>
+              icon: "text-white",}}
+          />
 
-            <div className="">
-              <span className='block text-gray-500 dark:text-white text-md font-bold'>Meu nome</span>
-              <span className='block text-gray-400  text-tiny font-medium'>email@example.com</span>
-            </div>
+          <div>
+            <span className='block text-gray-500 dark:text-white text-md font-bold'>{user.name}</span>
+            <span className='block text-gray-400  text-tiny font-medium'>{user.email}</span>
+          </div>
 
-            <button className='text-xl transition-all hover:scale-105 hover:translate-x-1'>
-              <IoExitOutline />
-            </button>
+          <SignOutButton/>
         </div>
     </>
   )

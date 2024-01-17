@@ -2,14 +2,38 @@ import Table from '@/components/Table'
 import { Card, CardBody, CardHeader } from '@nextui-org/react'
 import { redirect } from 'next/navigation'
 
+import { getCurrentuser } from '@/lib/session'
 
-export default function Home() {
 
-  const userIsLogged = false
+export default async function Home() {
+
+  const userIsLogged = await getCurrentuser()
+
+  const user = {
+    image: userIsLogged?.image || "",
+    name: userIsLogged?.name || "",
+    email: userIsLogged?.email,
+  }
 
   if(!userIsLogged){
     redirect('/login')
   }
+
+  const getDate = () => {
+    const mounthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+  
+    const today = new Date();
+  
+    const day = today.getDate();
+    const mounth = mounthNames[today.getMonth()];
+    const year = today.getFullYear();
+  
+    return `${day}, ${mounth}, ${year}`;
+  }
+  
 
   return (
     <div className="w-full flex flex-col items-center gap-10 p-10 rounded-s-2xl">
@@ -17,8 +41,8 @@ export default function Home() {
       <div className="w-full rounded-lg p-5 bg-gradient-to-r from-emerald-300 via-blue-400 to-purple-300 dark:from-emerald-700 dark:from-10% dark:via-blue-900 dark:to-purple-800 shadow-lg">
         <div className="flex justify-between items-end">
           <div>
-            <p className='font-semibold text-sm text-white'>Olá Desknik!</p>
-            <p className='font-semibold text-sm text-white'>12, Saturday, 2024</p>
+            <p className='font-semibold text-sm text-white'>Olá {user.name}!</p>
+            <p className='font-semibold text-sm text-white'>{getDate()}</p>
           </div>
 
           <Card isBlurred className='bg-white/30 border border-white/40 col-end-5'>

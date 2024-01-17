@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useState } from 'react'
 
 import { Button} from '@nextui-org/react'
 import { FiChevronsRight } from "react-icons/fi";
