@@ -112,7 +112,9 @@ export default function Form() {
                     <Button className='py-6 px-12' onClick={() => {signIn("github", {callbackUrl: "/"})}}>
                         <FaGithub/> Github
                     </Button>
-                    <Button className='py-6 px-12'><FaGoogle/>Google</Button>
+                    <Button className='py-6 px-12' onClick={() => {signIn("google", {callbackUrl: "/"})}}>
+                        <FaGoogle/> Google
+                    </Button>
                 </div>
 
                 <span className='text-gray-400 my-2 mx-auto'>or</span>

@@ -76,8 +76,12 @@ export default function Form() {
 
             <CardBody>
                 <div className="flex justify-between gap-3">
-                    <Button className='py-6 px-12'><FaGithub/>Github</Button>
-                    <Button className='py-6 px-12'><FaGoogle/>Google</Button>
+                    <Button className='py-6 px-12' onClick={() => {signIn("github", {callbackUrl: "/"})}} >
+                        <FaGithub/> Github
+                    </Button>
+                    <Button className='py-6 px-12' onClick={() => {signIn("google", {callbackUrl: "/"})}}>
+                        <FaGoogle/> Google
+                    </Button>
                 </div>
 
                 <span className='text-gray-400 my-2 mx-auto'>or</span>
