@@ -65,5 +65,53 @@ export const authOptions: NextAuthOptions = {
     pages:{
         signIn: '/login',
         
+    },
+    callbacks: {
+        async signIn({user, account, profile}) {
+          // Verifica se o e-mail já está vinculado a outra conta
+
+          if(account!.type === "oauth"){
+            const existingUser = await prisma.user.findUnique({
+                where: {
+                  email: user.email!,
+                },
+              });
+
+            if (existingUser && existingUser.id !== user.id) {
+            // Vincula a conta ao usuário existente
+                await prisma.account.create({
+                    data: {
+                    userId: existingUser.id,
+                    type: account!.type,
+                    provider: account!.provider,
+                    providerAccountId: account!.providerAccountId,
+                    access_token: account!.access_token,
+                    expires_at: account!.expires_at || null,
+                    scope: account!.scope,
+                    id_token: account!.id_token || null,
+                    session_state: account!.session_state || null
+                    },
+                });
+
+
+                if(existingUser.image === null){
+                    await prisma.user.update({
+                        where:{
+                            id: existingUser.id,
+                        },
+                        data:{
+                            // @ts-ignore
+                            image:profile!.avatar_url || profile!.picture || profile!.image
+                        }
+                    })
+                }
+                
+                return true;
+            }
+        }
+        
+        return true;
+          
+        },
     }
 }
