@@ -6,6 +6,7 @@ import bcrypt from 'bcrypt'
 
 export async function GET(){
     const users = await prisma.user.findMany()
+    await prisma.$disconnect()
 
     return NextResponse.json({users}, {status: 200})
 }
@@ -28,6 +29,7 @@ export async function POST(req: NextRequest) {
             email
         },
     })
+    await prisma.$disconnect()
 
     if(existingUser){
         return NextResponse.json({message: "User already exists"}, {status: 400})
@@ -55,6 +57,8 @@ export async function POST(req: NextRequest) {
             role: (role? role : "Client")  
         }
     })
+
+    await prisma.$disconnect()
 
     if(user){
         return NextResponse.json({message: "User Created Successfully!"}, {status: 200})

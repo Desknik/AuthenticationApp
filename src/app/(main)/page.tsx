@@ -46,6 +46,8 @@ export default async function Home() {
     }
   })
 
+  await prisma.$disconnect()
+
   const formattedUsers = users.map((user) => {
     return{
       id:(parseInt(user.id)),

@@ -45,6 +45,8 @@ export const authOptions: NextAuthOptions = {
                     }
                 })
 
+                await prisma.$disconnect()
+
                 if(!user){
                     throw new Error("User not found")
                 }
@@ -82,6 +84,8 @@ export const authOptions: NextAuthOptions = {
                 },
               });
 
+              await prisma.$disconnect()
+
             if (existingUser && existingUser.id !== user.id) {
             // Vincula a conta ao usuário existente
                 const newLinkedAccount = await prisma.account.create({
@@ -109,6 +113,8 @@ export const authOptions: NextAuthOptions = {
                             image:profile!.avatar_url || profile!.picture || profile!.image
                         }
                     })
+
+                    await prisma.$disconnect()
                 }
                 
                 return true;
@@ -136,6 +142,8 @@ export const authOptions: NextAuthOptions = {
 
                 //@ts-ignore
                 session.linkedAccounts = linkedAccounts
+
+                await prisma.$disconnect()
 
                 return session
 

@@ -1,7 +1,3 @@
-import { prismaCli as prisma } from '@/lib/prismaInstance';
-import React from "react";
-
-
 const columns = [
   {name: "ID", uid: "id", sortable: true},
   {name: "USER", uid: "user", sortable: true},
