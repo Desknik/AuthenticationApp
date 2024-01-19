@@ -12,6 +12,9 @@ export default function OpenedSidebar() {
 
   const {data: session, status } = useSession()
 
+  console.log(session);
+  
+
   const user = {
     image: session?.user?.image || "",
     name: session?.user?.name || "",
@@ -22,7 +25,7 @@ export default function OpenedSidebar() {
         <div>
           <div className="flex gap-2 items-end">
             <Image src='/assets/logo_2.png' alt='Logo' width={50} height={50}/>
-            <h2 className='text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-violet-400 to-sky-300 text-xl font-bold'>Ponnye</h2>
+            <h2 className='text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-violet-400 to-sky-300 text-xl font-bold'>Ponnye Auth</h2>
           </div>
 
           <Divider className='my-5'></Divider>

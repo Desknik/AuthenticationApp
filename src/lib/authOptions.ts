@@ -1,3 +1,4 @@
+import { Providers } from '@/providers';
 import { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter"
 
@@ -7,6 +8,10 @@ import Google from "next-auth/providers/google"
 
 import { prismaCli as prisma } from "@/lib/prismaInstance"
 import bcrypt from "bcrypt"
+
+interface ExtendedSession {
+    linkedAccounts?: string[];
+  }
 
 export const authOptions: NextAuthOptions = {
     // @ts-ignore
@@ -79,7 +84,7 @@ export const authOptions: NextAuthOptions = {
 
             if (existingUser && existingUser.id !== user.id) {
             // Vincula a conta ao usuário existente
-                await prisma.account.create({
+                const newLinkedAccount = await prisma.account.create({
                     data: {
                     userId: existingUser.id,
                     type: account!.type,
@@ -113,5 +118,30 @@ export const authOptions: NextAuthOptions = {
         return true;
           
         },
+        async session({ session, user, token }) {
+            
+            if(session.user?.email){
+                const linkedAccounts = await prisma.user.findUnique({
+                    where:{
+                        email: session.user?.email
+                    },
+                    select:{
+                        accounts:{
+                            select:{
+                                provider:true
+                            }
+                        }
+                    }
+                })
+
+                //@ts-ignore
+                session.linkedAccounts = linkedAccounts
+
+                return session
+
+            }
+            
+            return session
+          },
     }
 }

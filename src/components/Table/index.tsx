@@ -13,27 +13,40 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Chip,
   User,
   Pagination,
   Selection,
-  ChipProps,
   SortDescriptor
 } from "@nextui-org/react";
-import { columns, users } from "./data";
+import { columns } from "./data";
 import { FaChevronDown, FaPlus, FaSearch } from "react-icons/fa";
 import { FaEllipsisVertical } from "react-icons/fa6";
 import { Link } from "@nextui-org/react";
 
 const INITIAL_VISIBLE_COLUMNS = ["user", "role", "actions", "github"];
 
-type User = typeof users[0];
+
+
+interface Users {
+  id: number;
+  user: string | null;
+  email: string | null;
+  role: string | null;
+  avatar: string | null;
+  providers: String[];
+};
+
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export default function App() {
+export default function App({ users }: {users: Users[]}) {
+  
+  type User = typeof users[0];
+  
+
+
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -58,7 +71,7 @@ export default function App() {
 
     if (hasSearchFilter) {
       filteredUsers = filteredUsers.filter((user) =>
-        user.user.toLowerCase().includes(filterValue.toLowerCase()),
+        user.user!.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
 
@@ -91,7 +104,7 @@ export default function App() {
       case "user":
         return (
           <User
-            avatarProps={{radius: "lg", src: user.avatar}}
+            avatarProps={{radius: "lg", src: user.avatar || ""}}
             description={user.email}
             name={cellValue}
           />
@@ -110,9 +123,9 @@ export default function App() {
         );
 
       case "github":
-      
-      if(cellValue && typeof cellValue == 'string') return(
-        <Link isExternal showAnchorIcon underline="hover" href={cellValue} className="text-bold text-small !text-blue-500">@{user.user}</Link>
+
+      if(user.providers.find(provider => provider === 'github')) return(
+        <Link isExternal showAnchorIcon underline="hover" href={`https://github.com/${user.user}`} className="text-bold text-small !text-blue-500">@{user.user}</Link>
         
       )
       return(

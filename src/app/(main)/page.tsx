@@ -3,6 +3,8 @@ import { Card, CardBody, CardHeader } from '@nextui-org/react'
 import { redirect } from 'next/navigation'
 
 import { getCurrentuser } from '@/lib/session'
+import { prismaCli as prisma } from '@/lib/prismaInstance'
+import Teste from '@/components/teste'
 
 
 export default async function Home() {
@@ -33,7 +35,28 @@ export default async function Home() {
   
     return `${day}, ${mounth}, ${year}`;
   }
-  
+
+  const users = await prisma.user.findMany({
+    include:{
+      accounts:{
+        select:{
+          provider: true,
+        }
+      }
+    }
+  })
+
+  const formattedUsers = users.map((user) => {
+    return{
+      id:(parseInt(user.id)),
+      user: user.name,
+      email: user.email,
+      providers: user.accounts.map((account) => account.provider),
+      role: user.role,
+      avatar: user.image
+    }
+  });
+
 
   return (
     <div className="w-full flex flex-col items-center gap-10 p-10 rounded-s-2xl">
@@ -60,7 +83,10 @@ export default async function Home() {
 
 
       <div className="w-full h-full">
-        <Table/>
+
+        <Table users={formattedUsers}/>
+
+        <Teste></Teste>
       </div>
       
     </div>

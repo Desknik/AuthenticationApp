@@ -4,6 +4,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prismaCli as prisma} from '@/lib/prismaInstance'
 import bcrypt from 'bcrypt'
 
+export async function GET(){
+    const users = await prisma.user.findMany()
+
+    return NextResponse.json({users}, {status: 200})
+}
+
 export async function POST(req: NextRequest) {
   
     const data = await req.json()
