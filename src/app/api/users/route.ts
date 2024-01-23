@@ -29,9 +29,9 @@ export async function POST(req: NextRequest) {
             email
         },
     })
-    await prisma.$disconnect()
 
     if(existingUser){
+        await prisma.$disconnect()
         return NextResponse.json({message: "User already exists"}, {status: 400})
     };
 
@@ -58,11 +58,13 @@ export async function POST(req: NextRequest) {
         }
     })
 
-    await prisma.$disconnect()
-
+    
     if(user){
+        await prisma.$disconnect()
         return NextResponse.json({message: "User Created Successfully!"}, {status: 200})
     };
+    
+    await prisma.$disconnect()
     
     return NextResponse.json({message: "An error has occurred"}, {status: 400})
     
