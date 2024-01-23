@@ -124,6 +124,7 @@ export const authOptions: NextAuthOptions = {
         return true;
           
         },
+        /*
         async session({ session, user, token }) {
             
             if(session.user?.email){
@@ -149,7 +150,7 @@ export const authOptions: NextAuthOptions = {
 
             }
             
-            return session
-          },
+            return true
+          },*/
     }
 }
